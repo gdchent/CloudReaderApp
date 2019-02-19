@@ -21,7 +21,7 @@ class WanFragment():BaseFragment<NoViewModel,FragmentBookBinding>() {
      */
     //本地定义list的标题tab数据集合
     private var mTitleList=ArrayList<String>()
-    private var mFragments = java.util.ArrayList<Fragment>(3)
+    private var mFragments = ArrayList<Fragment>(3)
     override fun setContent(): Int {
        return R.layout.fragment_book
     }

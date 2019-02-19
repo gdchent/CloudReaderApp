@@ -1,6 +1,6 @@
 package com.example.dell.cloudreaderapp.ui.fragment
 
-import android.app.Fragment
+
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelStore
@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +46,7 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
     private var v:View?=null
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         v= inflater?.inflate(R.layout.fragment_base, container, false)
         inflater?.let {
             bindingView = DataBindingUtil.inflate(inflater, setContent(), null, false)
@@ -90,8 +91,11 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
 
             var viewModelStore=ViewModelStore()
             //拿到ViewModelProvider
-            val viewModelProvider = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(activity.application))
-            this.viewModel=viewModelProvider.get(viewModelClass)
+            activity?.let {
+                val viewModelProvider = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(it.application))
+                this.viewModel=viewModelProvider.get(viewModelClass)
+            }
+
 
 
         }
