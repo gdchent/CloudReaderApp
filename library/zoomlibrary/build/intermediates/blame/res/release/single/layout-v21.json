@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "D:\\software\\CloudReaderApp\\library\\zoomlibrary\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\Dell\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\953dbbb988ba798dcb609a0c51f32ff6\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "D:\\software\\CloudReaderApp\\library\\zoomlibrary\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\Dell\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\953dbbb988ba798dcb609a0c51f32ff6\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "D:\\software\\CloudReaderApp\\library\\zoomlibrary\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\Dell\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\953dbbb988ba798dcb609a0c51f32ff6\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "D:\\software\\CloudReaderApp\\library\\zoomlibrary\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\Dell\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\953dbbb988ba798dcb609a0c51f32ff6\\res\\layout-v21\\notification_action_tombstone.xml"
+    }
+]

@@ -34,37 +34,33 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
     // fragment是否显示了
     protected var mIsVisible = false
     // 加载中
-    private var loadingView: View? = null
+    protected var loadingView: View? = null
     // 加载失败
-    private var mRefresh: LinearLayout? = null
+    protected var mRefresh: LinearLayout? = null
     // 内容布局
     protected var mContainer: RelativeLayout? = null
     // 动画
-    private var mAnimationDrawable: AnimationDrawable? = null
-    private var mCompositeSubscription: CompositeSubscription? = null
+    protected var mAnimationDrawable: AnimationDrawable? = null
+    protected var mCompositeSubscription: CompositeSubscription? = null
 
     private var v:View?=null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        v= inflater?.inflate(R.layout.fragment_base, container, false)
-        inflater?.let {
-            bindingView = DataBindingUtil.inflate(inflater, setContent(), null, false)
-        }
-
+        v= inflater.inflate(R.layout.fragment_base, container, false)
+        bindingView = DataBindingUtil.inflate(inflater, setContent(), container, false)
         var params:RelativeLayout.LayoutParams=RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
         bindingView?.root?.layoutParams=params
         mContainer=v?.findViewById(R.id.container)
         mContainer?.addView(bindingView?.root)
-        return view
+        return v
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        loadingView = (getView(R.id.vs_loading) as ViewStub).inflate()
+        loadingView =  getView<ViewStub>(R.id.vs_loading)?.inflate()
         val img = loadingView?.findViewById<ImageView>(R.id.img_progress)
-
         // 加载动画
         mAnimationDrawable = img?.drawable as AnimationDrawable
         // 默认进入页面就开启动画
@@ -73,9 +69,11 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
         }
         mRefresh = getView(R.id.ll_error_refresh)
         // 点击加载失败布局
-        mRefresh?.setOnClickListener(View.OnClickListener {
-            showLoading()
-            onRefresh()
+        mRefresh?.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                showLoading()
+                onRefresh()
+            }
         })
         bindingView?.getRoot()?.visibility = View.GONE
         initViewModel()
@@ -86,7 +84,8 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
      * 初始化ViewModel
      */
     private fun initViewModel() {
-        val viewModelClass:Class<VM> = ClassUtil.getViewModel(this)
+        //可以为空
+        val viewModelClass:Class<VM>? = ClassUtil.getViewModel(this@BaseFragment)
         if (viewModelClass != null) {
 
             var viewModelStore=ViewModelStore()
@@ -118,9 +117,6 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
      */
     protected fun showLoading() {
 
-        loadingView?.let {
-
-        }
         if (loadingView != null && loadingView?.getVisibility() != View.VISIBLE) {
             loadingView?.setVisibility(View.VISIBLE)
         }
@@ -165,8 +161,10 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
         loadData()
     }
 
-    protected fun <T : View> getView(id: Int): T {
-        return view?.findViewById<View>(id) as T
+    protected fun <T : View> getView(id: Int): T? {
+        var getView=view
+        var t:T=getView?.findViewById<View>(id) as T
+        return t
     }
 
 

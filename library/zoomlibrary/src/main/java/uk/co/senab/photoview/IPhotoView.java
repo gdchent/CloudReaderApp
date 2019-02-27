@@ -64,19 +64,19 @@ public interface IPhotoView {
 
     /**
      * @return The current minimum scale level. What this value represents depends on the current
-     * {@link android.widget.ImageView.ScaleType}.
+     * {@link ImageView.ScaleType}.
      */
     float getMinimumScale();
 
     /**
      * @return The current medium scale level. What this value represents depends on the current
-     * {@link android.widget.ImageView.ScaleType}.
+     * {@link ImageView.ScaleType}.
      */
     float getMediumScale();
 
     /**
      * @return The current maximum scale level. What this value represents depends on the current
-     * {@link android.widget.ImageView.ScaleType}.
+     * {@link ImageView.ScaleType}.
      */
     float getMaximumScale();
 
@@ -104,14 +104,14 @@ public interface IPhotoView {
 
     /**
      * Sets the minimum scale level. What this value represents depends on the current {@link
-     * android.widget.ImageView.ScaleType}.
+     * ImageView.ScaleType}.
      *
      * @param minimumScale minimum allowed scale
      */
     void setMinimumScale(float minimumScale);
 
     /**
-     * Sets the medium scale level. What this value represents depends on the current {@link android.widget.ImageView.ScaleType}.
+     * Sets the medium scale level. What this value represents depends on the current {@link ImageView.ScaleType}.
      *
      * @param mediumScale medium scale preset
      */
@@ -119,7 +119,7 @@ public interface IPhotoView {
 
     /**
      * Sets the maximum scale level. What this value represents depends on the current {@link
-     * android.widget.ImageView.ScaleType}.
+     * ImageView.ScaleType}.
      *
      * @param maximumScale maximum allowed scale preset
      */
@@ -207,7 +207,7 @@ public interface IPhotoView {
     /**
      * Controls how the image should be resized or moved to match the size of the ImageView. Any
      * scaling or panning will happen within the confines of this {@link
-     * android.widget.ImageView.ScaleType}.
+     * ImageView.ScaleType}.
      *
      * @param scaleType - The desired scaling mode.
      */

@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
@@ -22,13 +23,21 @@ import com.example.dell.cloudreaderapp.rx.RxBus
 import com.example.dell.cloudreaderapp.rx.RxBusBaseMessage
 import com.example.dell.cloudreaderapp.rx.RxCodeConstants
 import com.example.dell.cloudreaderapp.statusbar.StatusBarUtil
+import com.example.dell.cloudreaderapp.ui.fragment.DoubanFragment
+import com.example.dell.cloudreaderapp.ui.fragment.GankFragment
 import com.example.dell.cloudreaderapp.ui.fragment.MyBottomSheetDialogFragment
+import com.example.dell.cloudreaderapp.ui.fragment.WanFragment
 import com.example.dell.cloudreaderapp.utils.*
+import com.example.dell.cloudreaderapp.view.MyFragmentPagerAdapter
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
-
-class MainActivity : AppCompatActivity(),View.OnClickListener {
+/**
+ * 主页面 使用的是侧边栏  drawerlayout 布局
+ *  主布局使用的是ToolBar +ViewPager的布局
+ *  思路分析： toolBar上面3个按钮 点击切换viewPager页面  使用vp.setCurrentItem(0)
+ */
+class MainActivity : AppCompatActivity(),View.OnClickListener,ViewPager.OnPageChangeListener {
 
 
     private var llTitleMenu: FrameLayout? = null
@@ -61,9 +70,10 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
 
         StatusBarUtil.setColorNoTranslucentForDrawerLayout(this@MainActivity, drawerLayout,
                 CommonUtils.getColor(R.color.colorTheme))
+        initContentFragment()  //初始化ViewPager对应的适配器的内容区域
         initDrawerLayout()
         initListener()
-        window.decorView.rootView
+
         //StringTest.test("adbc","abc")
     }
 
@@ -76,24 +86,43 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
 
+    //初始化内容Fragment
+    fun initContentFragment(){
+        var fragmentList:ArrayList<Fragment> = ArrayList()
+        fragmentList.add(WanFragment())  //viewapger对应的第一个Fragment
+        fragmentList.add(GankFragment()) //viewpager对应的第二个Fragment
+        fragmentList.add(DoubanFragment()) //viewpager对应的第三个Fragment
+
+        //获取适配器
+        var mAdapter:MyFragmentPagerAdapter= MyFragmentPagerAdapter(supportFragmentManager,fragmentList)
+        vpContent?.apply {
+            adapter=mAdapter
+        }
+        toolbar?.setTitle("") //设置标题栏木为空
+        setSupportActionBar(toolbar)
+
+        //默认设置第0页
+        vpContent?.setCurrentItem(0)
+    }
+
     //初始化id
     private fun initId() {
         drawerLayout = mBinding?.drawerLayout
         navView = mBinding?.navView
-        toolbar = mBinding?.include?.toolbar
-        llTitleMenu = mBinding?.include?.llTitleMenu
-        vpContent = mBinding?.include?.vpContent
-        ivTitleOne = mBinding?.include?.ivTitleOne
-        ivTitleTwo = mBinding?.include?.ivTitleTwo
-        ivTitleThree = mBinding?.include?.ivTitleThree
+        toolbar = mBinding?.include?.toolbar    //最外面的toolbar
+        llTitleMenu = mBinding?.include?.llTitleMenu   //点击拉出侧拉菜单的按钮
+        vpContent = mBinding?.include?.vpContent   //viewpager
+        ivTitleOne = mBinding?.include?.ivTitleOne   //图标1
+        ivTitleTwo = mBinding?.include?.ivTitleTwo  //图标2
+        ivTitleThree = mBinding?.include?.ivTitleThree  //图标3
         tvStartBottomDialog=mBinding?.include?.tvStartBottomDialog
     }
 
     //返回键
     override fun onBackPressed() {
         drawerLayout?.let {
-            if (it.isDrawerOpen(Gravity.END)) {
-                it.closeDrawer(Gravity.END)
+            if (it.isDrawerOpen(Gravity.START)) {
+                it.closeDrawer(Gravity.START)
             } else {
                 super.onBackPressed()
             }
@@ -116,8 +145,12 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
 
     //初始化监听
     fun initListener(){
-        llTitleMenu?.setOnClickListener(this)
+        llTitleMenu?.setOnClickListener(this)  //拉出侧拉菜单的点击监听设置
         tvStartBottomDialog?.setOnClickListener(this)
+
+        /**
+         * toolBar区域最上面点击事件
+         */
         mBinding?.include?.ivTitleOne?.setOnClickListener(this)
         mBinding?.include?.ivTitleTwo?.setOnClickListener(this)
         mBinding?.include?.ivTitleThree?.setOnClickListener(this)
@@ -221,17 +254,30 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
                      drawerLayout?.openDrawer(GravityCompat.START)  //从左边打开
 
                  }
-                R.id.iv_title_one ->{ //图片1的点击触发 走什么逻辑
-                    Log.i("gdchent","one")
+                R.id.iv_title_one ->{ //图片1的点击触发  设置viewpager的当前页面为1
+                    //Log.i("gdchent","one")
+                    //加个判断  如果是在当前页面
+                    if(vpContent?.currentItem!=0){
+                        setCurrentItem(0)
+                    }
+
                 }
-                R.id.iv_title_two -> {  //图片2点击触发逻辑
-                    Log.i("gdchent","two")
+                R.id.iv_title_two -> {  //图片2点击触发逻辑 设置viewpager的当前页面为2
+                    //Log.i("gdchent","two")
+                    if(vpContent?.currentItem!=1){
+                        setCurrentItem(1)
+                    }
+
                 }
-                R.id.iv_title_three ->{ //图片3点击触发逻辑
-                    Log.i("gdchent","three")
+                R.id.iv_title_three ->{ //图片3点击触发逻辑 设置viewpager当前页面为3
+                    //Log.i("gdchent","three")
+                    if(vpContent?.currentItem!=2){
+                        setCurrentItem(2)
+                    }
+
                 }
                 R.id.tv_start_bottom_dialog ->{
-                    Log.i("gdchent","bottom")
+                    //Log.i("gdchent","bottom")
                     if (myBottomSheetDialogFragment==null){
                         myBottomSheetDialogFragment= MyBottomSheetDialogFragment()
 
@@ -240,5 +286,30 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
 
                 }
             }
+    }
+
+    override fun onPageScrollStateChanged(state: Int) {
+
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+    }
+
+    override fun onPageSelected(position: Int) {
+        when(position){
+            0 ->{
+                setCurrentItem(position)
+            }
+            1 ->{
+                setCurrentItem(position)
+            }
+            2 ->{
+                setCurrentItem(position)
+            }
+            else ->{
+                setCurrentItem(0)
+            }
+        }
     }
 }

@@ -55,4 +55,11 @@
     <!--dialog的查看详情键-->
     <color name="colorBtDialog">#38659C</color>
 
+
+    <!--主页tab背景-->
+    <color name="colorTabBg">#ffffffff</color>
+    <color name="colorTabTextCheck">#ffce3d3a</color>
+    <color name="colorTabTextNormal">#585858</color>
+    <color name="colorTabLine">#ffce3d3a</color>
+
 </resources>

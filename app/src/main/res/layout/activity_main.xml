@@ -13,6 +13,8 @@
         tools:context=".ui.act.MainActivity">
 
 
+
+        <!--这里是内容区域视图-->
         <include
             android:id="@+id/include"
             layout="@layout/app_bar_main"
