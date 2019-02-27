@@ -94,9 +94,6 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
                 val viewModelProvider = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(it.application))
                 this.viewModel=viewModelProvider.get(viewModelClass)
             }
-
-
-
         }
     }
 

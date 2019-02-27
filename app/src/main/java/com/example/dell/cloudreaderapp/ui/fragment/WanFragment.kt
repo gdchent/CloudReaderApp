@@ -5,7 +5,9 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.example.dell.cloudreaderapp.R
 import com.example.dell.cloudreaderapp.databinding.FragmentBookBinding
 import com.example.dell.cloudreaderapp.view.MyFragmentPagerAdapter
@@ -27,6 +29,10 @@ class WanFragment() : BaseFragment<NoViewModel, FragmentBookBinding>() {
     private var mFragments = ArrayList<Fragment>(3)
     override fun setContent(): Int {
         return R.layout.fragment_book
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -76,7 +82,7 @@ class WanFragment() : BaseFragment<NoViewModel, FragmentBookBinding>() {
         mTitleList.add("玩安卓")
         mTitleList.add("知识体系")
         mTitleList.add("导航数据")
-        mFragments.clear()
+        //mFragments.clear()
         mFragments.add(BannerFragment.getInstance()) //WanAndroid对应的第一个Fragment
         mFragments.add(TreeFragment.getInstance())   //WanAndroid对应的第二个Fragment
         mFragments.add(BannerFragment.getInstance())  //WanAndroid对应的第三个Fragment

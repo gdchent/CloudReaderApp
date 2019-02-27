@@ -98,6 +98,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,ViewPager.OnPageCh
         vpContent?.apply {
             adapter=mAdapter
         }
+        vpContent?.offscreenPageLimit=2  //这个不设置会出问题的
         toolbar?.setTitle("") //设置标题栏木为空
         setSupportActionBar(toolbar)
 
