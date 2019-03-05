@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
 
     </data>
-    <LinearLayout
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_wan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <TextView
+        >
+
+        <com.example.xrecyclerview.XRecyclerView
+            android:id="@+id/xrv_wan"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="wan android" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbarFadeDuration="1"
+            android:scrollbarSize="4dp"
+            android:scrollbars="vertical"
+            >
+
+        </com.example.xrecyclerview.XRecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </layout>

@@ -61,21 +61,7 @@ class WanFragment() : BaseFragment<NoViewModel, FragmentBookBinding>() {
         showContentView()
     }
 
-    fun showContentView() {
-        if (loadingView != null && loadingView!!.getVisibility() != View.GONE) {
-            loadingView!!.setVisibility(View.GONE)
-        }
-        // 停止动画
-        if (mAnimationDrawable!!.isRunning()) {
-            mAnimationDrawable!!.stop()
-        }
-        if (mRefresh!!.getVisibility() != View.GONE) {
-            mRefresh!!.setVisibility(View.GONE)
-        }
-        if (bindingView!!.getRoot().visibility != View.VISIBLE) {
-            bindingView!!.getRoot().visibility = View.VISIBLE
-        }
-    }
+
 
     private fun initFragmentList() {
         mTitleList.clear()

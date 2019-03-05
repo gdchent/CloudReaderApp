@@ -105,14 +105,14 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
     /**
      * 加载失败后点击后的操作
      */
-    protected fun onRefresh() {
+   open protected fun onRefresh() {
 
     }
 
     /**
      * 显示加载中状态
      */
-    protected fun showLoading() {
+   open protected fun showLoading() {
 
         if (loadingView != null && loadingView?.getVisibility() != View.VISIBLE) {
             loadingView?.setVisibility(View.VISIBLE)
@@ -130,6 +130,26 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
     }
 
     /**
+     * 加载完成的状态
+     */
+   open protected fun showContentView() {
+        if (loadingView != null && loadingView?.getVisibility() != View.GONE) {
+            loadingView?.setVisibility(View.GONE)
+        }
+        // 停止动画
+        if (mAnimationDrawable?.isRunning()!=true) {
+            mAnimationDrawable?.stop()
+        }
+        if (mRefresh?.getVisibility() != View.GONE) {
+            mRefresh?.setVisibility(View.GONE)
+        }
+        if (bindingView?.getRoot()?.visibility != View.VISIBLE) {
+            bindingView?.getRoot()?.visibility = View.VISIBLE
+        }
+    }
+
+
+    /**
      * 在这里实现Fragment数据的缓加载.
      */
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -143,7 +163,7 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
         }
     }
 
-    protected fun onInvisible() {}
+   open protected fun onInvisible() {}
 
 
     /**
@@ -152,13 +172,13 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
      * 生命周期会先执行 setUserVisibleHint 再执行onActivityCreated
      * 在 onActivityCreated 之后第一次显示加载数据，只加载一次
      */
-    protected fun loadData() {}
+   open protected fun loadData() {}
 
     protected fun onVisible() {
         loadData()
     }
 
-    protected fun <T : View> getView(id: Int): T? {
+   open protected fun <T : View> getView(id: Int): T? {
         var getView=view
         var t:T=getView?.findViewById<View>(id) as T
         return t

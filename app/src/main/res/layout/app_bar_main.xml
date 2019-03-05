@@ -15,7 +15,7 @@
             android:id="@+id/view_status"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:background="@android:color/holo_red_light"
+            android:background="@android:color/black"
             android:visibility="visible" />
 
         <android.support.v7.widget.Toolbar

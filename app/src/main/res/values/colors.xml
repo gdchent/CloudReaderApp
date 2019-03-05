@@ -10,6 +10,8 @@
 
     <!--分割线-->
     <color name="colorLine">#EBEBEB</color>
+    <!--首页分割线-->
+    <color name="colorHomeLine">#D4D4D4</color>
     <!--页面背景的颜色-->
     <color name="color_page_bg">#F1F3F4</color>
     <!--侧边栏分割线-->

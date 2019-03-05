@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
@@ -67,9 +68,9 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,ViewPager.OnPageCh
         initStatusView()
         initId()
         initRxBus()
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this@MainActivity,R.color.colorPrimary))
 
-        StatusBarUtil.setColorNoTranslucentForDrawerLayout(this@MainActivity, drawerLayout,
-                CommonUtils.getColor(R.color.colorTheme))
+
         initContentFragment()  //初始化ViewPager对应的适配器的内容区域
         initDrawerLayout()
         initListener()

@@ -34,7 +34,5 @@ class TreeFragment():BaseFragment<TreeViewModel,FragmentWanAndroidBinding>() {
         showContentView()
     }
 
-    fun showContentView(){
 
-    }
 }
