@@ -230,4 +230,10 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
         getHomeList() //重新获取列表数据
     }
 
+    //重写基类的onRefresh方法  如果加载失败就会调用该方法
+   override protected fun onRefresh() {
+        bindingView?.srlWan?.isRefreshing = true
+        getHomeList()
+    }
+
 }

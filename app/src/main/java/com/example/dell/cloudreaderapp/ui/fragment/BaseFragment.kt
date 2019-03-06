@@ -47,6 +47,7 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        //inflater解析fragment_base这个布局
         var v = inflater.inflate(R.layout.fragment_base, container, false)//获取RelativeLayout布局
         bindingView = DataBindingUtil.inflate(inflater, setContent(), container, false)  //使用databinding获取子类布局
         var params:RelativeLayout.LayoutParams=RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
