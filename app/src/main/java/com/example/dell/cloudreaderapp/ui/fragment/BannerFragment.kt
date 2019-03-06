@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.util.Log
@@ -28,7 +29,7 @@ import java.util.ArrayList
 /**
  * Created by chentao
  * Date:2019/2/19
- * Description:
+ * Description: 玩Android的BannerFragment界面
  */
 class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroidBinding>() {
 
@@ -64,6 +65,7 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
 
     //加载数据
     override fun loadData() {
+        //这3个有一个等于false就终止
         if (!mIsVisible || !mIsPrepared || !mIsFirst) {
             return
         }
@@ -173,7 +175,7 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
         //RecyclerView添加头部布局
         bindingView?.xrvWan?.addHeaderView(androidBinding.root)
         DensityUtil.formatBannerHeight(androidBinding.banner, androidBinding.llBannerImage)
-        
+
         //获取轮播图
         viewModel?.getWanAndroidBanner()?.observe(this, object : Observer<WanAndroidBannerBean> {
             override fun onChanged(bean: WanAndroidBannerBean?) {
@@ -192,9 +194,18 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
             }
         })
 
+        //下拉刷新 SwiperRefreshLayout下拉刷新
+        bindingView?.srlWan?.setOnRefreshListener(object :SwipeRefreshLayout.OnRefreshListener{
+            override fun onRefresh() {
+                Log.i("gdchent","OnRefreshListener_onRefresh")
+                swipeRefresh()
+            }
+        });
+        //下拉刷新监听
         bindingView?.xrvWan?.setLoadingListener(object : XRecyclerView.LoadingListener {
             override fun onRefresh() {
-
+                Log.i("gdchent","LoadingListener_onRefresh")
+                swipeRefresh()
             }
 
             override fun onLoadMore() {
@@ -207,6 +218,16 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
             }
         })
 
+    }
+
+    /**
+     * RecyclerView的下拉刷新
+     */
+    private fun swipeRefresh(){
+        Log.i("gdchent","下拉刷新开始监听")
+        viewModel?.setPage(0)
+        bindingView?.xrvWan?.reset()
+        getHomeList() //重新获取列表数据
     }
 
 }
