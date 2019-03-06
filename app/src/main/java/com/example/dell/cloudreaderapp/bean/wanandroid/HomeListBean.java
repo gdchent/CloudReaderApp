@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 
+import com.example.dell.cloudreaderapp.BR;
 
 import java.util.List;
 

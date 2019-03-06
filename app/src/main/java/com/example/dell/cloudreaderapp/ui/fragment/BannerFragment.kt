@@ -79,15 +79,15 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
                 override fun onChanged(homeListBean: HomeListBean?) {
 
                     bindingView?.apply {
-                        if (srlWan.isRefreshing) {
+                        if (srlWan.isRefreshing) { //隐藏进度加载圈
                             srlWan.isRefreshing = false
                         }
                     }
-
+                    //如果从后台获取的列表数据不为空
                     if (homeListBean != null
-                            && homeListBean!!.getData() != null
-                            && homeListBean!!.getData().getDatas() != null
-                            && homeListBean!!.getData().getDatas().size > 0) {
+                            && homeListBean.getData() != null
+                            && homeListBean.getData().getDatas() != null
+                            && homeListBean.getData().getDatas().size > 0) {
                         if (viewModel?.getPage() === 0) {
                             showContentView()
                             mAdapter?.clear()
