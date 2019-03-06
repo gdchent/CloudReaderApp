@@ -18,6 +18,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.example.dell.cloudreaderapp.R
 import com.example.dell.cloudreaderapp.utils.ClassUtil
+import com.tencent.bugly.proguard.v
 import rx.subscriptions.CompositeSubscription
 
 /**
@@ -27,38 +28,38 @@ import rx.subscriptions.CompositeSubscription
  */
 abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragment() {
 
-    //声明ViewModel
-    protected var viewModel: VM? = null
+
+    // ViewModel
+    protected var viewModel: VM?=null
     // 布局view
-    protected var bindingView: SV? = null
+    protected var bindingView: SV?=null
     // fragment是否显示了
     protected var mIsVisible = false
     // 加载中
-    protected var loadingView: View? = null
+    private var loadingView: View? = null
     // 加载失败
-    protected var mRefresh: LinearLayout? = null
+    private var mRefresh: LinearLayout? = null
     // 内容布局
-    protected var mContainer: RelativeLayout? = null
+    protected var mContainer: RelativeLayout?=null
     // 动画
-    protected var mAnimationDrawable: AnimationDrawable? = null
-    protected var mCompositeSubscription: CompositeSubscription? = null
-
-    private var v:View?=null
+    private var mAnimationDrawable: AnimationDrawable? = null
+    private var mCompositeSubscription: CompositeSubscription? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        v= inflater.inflate(R.layout.fragment_base, container, false)
-        bindingView = DataBindingUtil.inflate(inflater, setContent(), container, false)
+        var v = inflater.inflate(R.layout.fragment_base, container, false)//获取RelativeLayout布局
+        bindingView = DataBindingUtil.inflate(inflater, setContent(), container, false)  //使用databinding获取子类布局
         var params:RelativeLayout.LayoutParams=RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        bindingView?.root?.layoutParams=params
-        mContainer=v?.findViewById(R.id.container)
-        mContainer?.addView(bindingView?.root)
+        bindingView?.getRoot()?.layoutParams=params
+        mContainer=v?.findViewById(R.id.container) //获取父类的RelativieLayout布局
+        mContainer?.addView(bindingView?.getRoot())
         return v
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        //在基类 加载loadingView
         loadingView =  getView<ViewStub>(R.id.vs_loading)?.inflate()
         val img = loadingView?.findViewById<ImageView>(R.id.img_progress)
         // 加载动画
@@ -148,6 +149,25 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
         }
     }
 
+
+    /**
+     * 加载失败点击重新加载的状态
+     */
+    protected fun showError() {
+        if (loadingView != null && loadingView?.getVisibility() != View.GONE) {
+            loadingView?.setVisibility(View.GONE)
+        }
+        // 停止动画
+        if (mAnimationDrawable?.isRunning()==true) {
+            mAnimationDrawable?.stop()
+        }
+        if (mRefresh?.getVisibility() != View.VISIBLE) {
+            mRefresh?.setVisibility(View.VISIBLE)
+        }
+        if (bindingView?.getRoot()?.visibility != View.GONE) {
+            bindingView?.getRoot()?.visibility = View.GONE
+        }
+    }
 
     /**
      * 在这里实现Fragment数据的缓加载.

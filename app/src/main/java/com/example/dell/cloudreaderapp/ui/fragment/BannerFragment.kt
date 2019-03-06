@@ -1,6 +1,7 @@
 package com.example.dell.cloudreaderapp.ui.fragment
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -37,6 +38,7 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
     var mIsFirst = true
     private var isLoadBanner = false
     private var mAdapter: WanAndroidAdapter? = null
+
     companion object {
 
         fun getInstance(): BannerFragment {
@@ -57,12 +59,12 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
 
         //准备就绪
         mIsPrepared = true
-       loadData()
+        loadData()
     }
 
-
+    //加载数据
     override fun loadData() {
-        if (!mIsVisible || mIsPrepared || !mIsFirst) {
+        if (!mIsVisible || !mIsPrepared || !mIsFirst) {
             return
         }
         bindingView?.srlWan?.isRefreshing = true //显示加载
@@ -74,45 +76,50 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
     fun getHomeList() {
 
         //ViewModel是被观察者  viewModel发射数据 观察者接收数据
-        viewModel?.apply {
-            getHomeList(null).observe(this@BannerFragment,object :Observer<HomeListBean>{
-                override fun onChanged(homeListBean: HomeListBean?) {
+        viewModel?.getHomeList(null)?.observe(this@BannerFragment, object : Observer<HomeListBean> {
+            override fun onChanged(homeListBean: HomeListBean?) {
 
-                    bindingView?.apply {
-                        if (srlWan.isRefreshing) { //隐藏进度加载圈
-                            srlWan.isRefreshing = false
-                        }
-                    }
-                    //如果从后台获取的列表数据不为空
-                    if (homeListBean != null
-                            && homeListBean.getData() != null
-                            && homeListBean.getData().getDatas() != null
-                            && homeListBean.getData().getDatas().size > 0) {
-                        if (viewModel?.getPage() === 0) {
-                            showContentView()
-                            mAdapter?.clear()
-                            mAdapter?.notifyDataSetChanged()
-                        }
-                        //  一个刷新头布局 一个header
-                        var positionStart = (mAdapter?.getItemCount())!! +2
-                        mAdapter?.addAll(homeListBean.getData().getDatas())
-                        mAdapter?.notifyItemRangeInserted(positionStart, homeListBean.getData().getDatas().size)
-                        bindingView?.xrvWan?.refreshComplete()  //刷新数据完成
-
-                        if (viewModel?.getPage() === 0) {
-                            mIsFirst = false
-                        }
-                    } else {
-                        if (viewModel?.getPage() === 0) {
-                            //showError()
-                        } else {
-                            bindingView?.xrvWan?.refreshComplete()
-                            bindingView?.xrvWan?.noMoreLoading()
-                        }
+                bindingView?.apply {
+                    if (srlWan.isRefreshing) { //隐藏进度加载圈
+                        srlWan.isRefreshing = false
                     }
                 }
-            })
-        }
+                //如果从后台获取的列表数据不为空
+                if (homeListBean != null
+                        && homeListBean.getData() != null
+                        && homeListBean.getData().getDatas() != null
+                        && homeListBean.getData().getDatas().size > 0) {
+                    if (viewModel?.getPage() == 0) {
+                        showContentView()
+                        mAdapter?.clear()
+                        mAdapter?.notifyDataSetChanged()
+                    }
+                    //  一个刷新头布局 一个header
+                    var itemCount=mAdapter?.getItemCount()
+                    var positionStart=0
+                    itemCount?.let {
+                        positionStart= itemCount + 2
+                    }
+
+                    mAdapter?.addAll(homeListBean.getData().getDatas())
+                    mAdapter?.notifyItemRangeInserted(positionStart, homeListBean.getData().getDatas().size)
+                    bindingView?.xrvWan?.refreshComplete()  //刷新数据完成
+
+                    if (viewModel?.getPage() === 0) {
+                        mIsFirst = false
+                    }
+                } else {
+                    if (viewModel?.getPage() === 0) {
+                        showError()
+                    } else {
+                        bindingView?.xrvWan?.refreshComplete()
+                        bindingView?.xrvWan?.noMoreLoading()
+                    }
+                }
+            }
+        })
+
+
 
     }
 
@@ -160,13 +167,13 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
         bindingView?.xrvWan?.setPullRefreshEnabled(false)
         bindingView?.xrvWan?.clearHeader()
         bindingView?.xrvWan?.itemAnimator = null
-        var mAdapter = WanAndroidAdapter(getActivity()) //获取适配器对象
+        mAdapter = WanAndroidAdapter(getActivity()) //获取适配器对象
         bindingView?.xrvWan?.adapter = mAdapter
         androidBinding = DataBindingUtil.inflate<HeaderWanAndroidBinding>(getLayoutInflater(), R.layout.header_wan_android, null, false)
         //RecyclerView添加头部布局
         bindingView?.xrvWan?.addHeaderView(androidBinding.root)
         DensityUtil.formatBannerHeight(androidBinding.banner, androidBinding.llBannerImage)
-
+        
         //获取轮播图
         viewModel?.getWanAndroidBanner()?.observe(this, object : Observer<WanAndroidBannerBean> {
             override fun onChanged(bean: WanAndroidBannerBean?) {
@@ -185,7 +192,7 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
             }
         })
 
-        bindingView?.xrvWan?.setLoadingListener(object :XRecyclerView.LoadingListener{
+        bindingView?.xrvWan?.setLoadingListener(object : XRecyclerView.LoadingListener {
             override fun onRefresh() {
 
             }
