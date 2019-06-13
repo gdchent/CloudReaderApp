@@ -37,4 +37,9 @@ ext {
     supportLibraryVersion = '27.1.1'
     junitVersion = '4.12'
     roomVersion = "1.1.1"
+
+    glide = "4.7.1"
+    glide_compiler = "4.7.1"
+    glide_transformations = "4.0.0"
+    constraint_layout = "1.1.3"
 }

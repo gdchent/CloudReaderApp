@@ -77,6 +77,7 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
                 onRefresh()
             }
         })
+        //bindingview这里是加载子类的R.layout.fragment_xxx子布局 返回的是view
         bindingView?.getRoot()?.visibility = View.GONE
         initViewModel()
     }
@@ -116,13 +117,15 @@ abstract class BaseFragment<VM : AndroidViewModel, SV : ViewDataBinding> : Fragm
      */
    open protected fun showLoading() {
 
+        //如果加载视图不为空 并且是可见状体 就隐藏
         if (loadingView != null && loadingView?.getVisibility() != View.VISIBLE) {
             loadingView?.setVisibility(View.VISIBLE)
         }
-        // 开始动画
+        // 如果动画不是运行状态 就开始动画
         if ((mAnimationDrawable?.isRunning()!=true)) {
             mAnimationDrawable?.start()
         }
+        //
         if (bindingView?.getRoot()?.visibility != View.GONE) {
             bindingView?.getRoot()?.visibility = View.GONE
         }

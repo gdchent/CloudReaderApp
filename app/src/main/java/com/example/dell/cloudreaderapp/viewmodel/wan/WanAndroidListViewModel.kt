@@ -18,9 +18,6 @@ import rx.schedulers.Schedulers
  */
 open class WanAndroidListViewModel(application: Application):BaseListViewModel(application) {
 
-
-
-
     //获取MutableLiveData数据
     open fun getWanAndroidBanner():MutableLiveData<WanAndroidBannerBean>{
         var data=MutableLiveData<WanAndroidBannerBean>()
@@ -31,7 +28,6 @@ open class WanAndroidListViewModel(application: Application):BaseListViewModel(a
                     override fun onError(e: Throwable?) {
 
                     }
-
                     override fun onNext(wanAndroidBannerBean: WanAndroidBannerBean?) {
 
                         var mBannerImages=ArrayList<String>()

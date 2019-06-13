@@ -71,7 +71,7 @@ class WanFragment() : BaseFragment<NoViewModel, FragmentBookBinding>() {
         //mFragments.clear()
         mFragments.add(BannerFragment.getInstance()) //WanAndroid对应的第一个Fragment
         mFragments.add(TreeFragment.getInstance())   //WanAndroid对应的第二个Fragment
-        mFragments.add(BannerFragment.getInstance())  //WanAndroid对应的第三个Fragment
+        mFragments.add(NaviFragment.getInstance())  //WanAndroid对应的第三个Fragment
 
     }
 }

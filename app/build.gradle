@@ -46,7 +46,11 @@ dependencies {
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+
+    implementation "com.github.bumptech.glide:glide:${glide}"
+    implementation "com.android.support.constraint:constraint-layout:${constraint_layout}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${glide_compiler}"
+    implementation "jp.wasabeef:glide-transformations:${glide_transformations}"
 
 
 
@@ -55,4 +59,6 @@ dependencies {
 
 
     implementation 'com.youth.banner:banner:1.4.10'  //引入图片轮播
+
+
 }

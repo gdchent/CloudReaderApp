@@ -209,6 +209,7 @@ class BannerFragment() : BaseFragment<WanAndroidListViewModel, FragmentWanAndroi
             }
 
             override fun onLoadMore() {
+                Log.i("gdchent","xRecyclerView上拉加载")
                 viewModel?.apply {
                     var page = getPage()
                     viewModel?.setPage(++page)
